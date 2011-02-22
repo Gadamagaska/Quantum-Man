@@ -103,48 +103,48 @@ public class Player {
 	public synchronized void movePlayer(Direction direction){
 		Database db = Database.getInstance();
 		Dimension map = db.getLevelDimensions(0);
-
+		
 		switch(direction) {	
 		case EAST:{
 			animation = anim_dirs.get(direction);
 			if(db.isWalkable(0, getX()+1, getY())){
-				if((getX()-getGhostX() > 2) && (getGhostX() < map.width-6)){
+				System.out.println(Math.abs(getX()-getGhostX()));
+				if(Math.abs(getX()-getGhostX()) > 3 && getGhostX() < map.width-6){
 					setGhostX(getGhostX()+1);
 				}
 				setX(getX()+1);
 			}
 			break;
 		}
-		case WEST:{
+		case WEST:
 			animation = anim_dirs.get(direction);
 			if(db.isWalkable(0, getX()-1, getY())){
-				if((getX()-getGhostX() < -1) && (getGhostX() > 4)){
+				if(Math.abs(getX()-getGhostX()) > 3 && getGhostX() > 4){
 					setGhostX(getGhostX()-1);
 				}
 				setX(getX()-1);
 			}
 			break;
-		}
 		case NORTH:
 			animation = anim_dirs.get(direction);
-			if(db.isWalkable(0, getX(), getY()-1)){
-				System.out.println(getGhostX()-getX());
-				System.out.println(getGhostX() > 5);
-				if((getY()-getGhostY() < -1) && (getGhostY() > 4)){
-					setGhostY(getGhostY()-1);
-				}
-				setY(getY()-1);
-			}
-			break;
+			if(Database.getInstance().isWalkable(0, getX(), getY()-1)){
+				position.y -= 1;
+				if(getY() < 2 && ghostPoint.y >= 5){
+					ghostPoint.y -= 1;
+					if(ghostPoint.y - getY() >= -3){
+						position.y = 2;
+					}
+				}}; break;
 		case SOUTH:
 			animation = anim_dirs.get(direction);
-			if(db.isWalkable(0, getX(), getY()+1)){
-				if((getY()-getGhostY() > 2) && (getGhostY() < map.height-6)){
-					setGhostY(getGhostY()+1);
-				}
-				setY(getY()+1);
-			}
-			break;
+			if(Database.getInstance().isWalkable(0, getX(), getY()+1)){
+				position.y += 1;
+				if(getY() >= 7 && ghostPoint.y <= 4){ //TODO: Set "Database.getInstance().getLevelHeight(0)-5"
+					ghostPoint.y += 1;
+					if(getY() - ghostPoint.y <= 3) {
+						position.y = 7;
+					}		
+				}}; break;
 		}
 	}
 }
