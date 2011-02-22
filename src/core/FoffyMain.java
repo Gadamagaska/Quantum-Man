@@ -68,9 +68,11 @@ public class FoffyMain extends Core implements KeyListener {
 		g.fillRect(0, 0, s.getWidth(), s.getHeight());
 		drawTiles(g);
 		g.drawImage(bg, 0, 0, null);
+		// Drawing the player
 		Image picture = player.getAnimation().getImage();
-		g.drawImage(picture, player.getX()*50+25, player.getY()*50+50, null);
-		g.drawImage(Database.getInstance().getTileImage("tileset1", 29),225,250,null);
+		int x = 25+(player.getX()-player.getGhostX()+4)*50;
+		int y = 50+(player.getY()-player.getGhostY()+4)*50;
+		g.drawImage(picture, x, y, null);
 		g.drawString("Player Coords: "+player.getX()+","+player.getY(), 200, 25);
 		g.drawString("Ghost Coords: "+player.getGhostX()+","+player.getGhostY(), 500, 25);
 		g.drawString("Map size (h*w): "+Database.getInstance().getLevelDimensions(0).height+","+Database.getInstance().getLevelDimensions(0).width, 300, 590);
@@ -81,16 +83,16 @@ public class FoffyMain extends Core implements KeyListener {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			stop();
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_RIGHT && player.getPosition().x < 9) {
+		else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			player.movePlayer(Direction.EAST);
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_LEFT && player.getPosition().x > 0) {
+		else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 			player.movePlayer(Direction.WEST);
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_DOWN && player.getPosition().y < 9) {
+		else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 			player.movePlayer(Direction.SOUTH);
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_UP && player.getPosition().y > 0) {
+		else if(e.getKeyCode() == KeyEvent.VK_UP) {
 			player.movePlayer(Direction.NORTH);
 		}
 	}
