@@ -102,7 +102,7 @@ public class FoffyMain extends Core implements KeyListener {
 	}
 
 	/**
-	 * Key events
+	 * Key events for controlling QMan on the map
 	 */
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
