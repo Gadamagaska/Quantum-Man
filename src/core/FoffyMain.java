@@ -25,14 +25,14 @@ public class FoffyMain extends Core implements KeyListener {
 	private Image bg;
 	private Player player;
 	private int posX;
-	private double startTime;
 	private int posY;
 
-	// Init ved at kalde superklassens init
+	/**
+	 * Initialize everything by initializing super.init and specifying positions for the player.
+	 */
 	public void init(){
 		super.init();
 		Point pos = new Point();
-		startTime = System.currentTimeMillis();
 		posX = 5;
 		posY = 5;
 		pos.setLocation(posX, posY);
@@ -40,6 +40,9 @@ public class FoffyMain extends Core implements KeyListener {
 		s.addKeyListener(this);
 	}
 	
+	/**
+	 * Draw everything on the screen
+	 */
 	public synchronized void draw(Graphics2D g) {
 		drawBackground(g);
 		drawBottomTiles(g);
@@ -51,6 +54,9 @@ public class FoffyMain extends Core implements KeyListener {
 		g.drawString("Map size (h*w): "+Database.getInstance().getLevelDimensions(0).height+","+Database.getInstance().getLevelDimensions(0).width, 300, 590+s.getInsets().top);
 	}
 
+	/**
+	 * Draws the tiles that are supposed to be drawn below the player
+	 */
 	private void drawBottomTiles(Graphics2D g) {
 		int x = 0, y = 0;
 		for(int i = player.getGhostX()-4 ; i < player.getGhostX()+6; i++) {
@@ -66,6 +72,9 @@ public class FoffyMain extends Core implements KeyListener {
 		}
 	}
 	
+	/**
+	 * Draws the tiles that are supposed to be drawn on top of the player
+	 */
 	private void drawTopTiles(Graphics2D g) {
 		int x = 0, y = 0;
 		for(int i = player.getGhostX()-4 ; i < player.getGhostX()+6 ; i++) {
@@ -79,6 +88,9 @@ public class FoffyMain extends Core implements KeyListener {
 		}
 	}
 	
+	/**
+	 * Draws the background on the screen on position(x, y)
+	 */
 	private void drawBackground(Graphics2D g) {
 		bg = new ImageIcon("images"+File.separator+"gui"+File.separator+"background.png").getImage();
 		g.setColor(Color.WHITE);
@@ -86,6 +98,9 @@ public class FoffyMain extends Core implements KeyListener {
 		g.drawImage(bg, 0, s.getInsets().top, null);
 	}
 	
+	/**
+	 * Draws the player on the screen on position (x, y)
+	 */
 	private void drawPlayer(Graphics2D g) {
 		Image picture = player.getAnimation().getImage();
 		int x = 25+(player.getX()-player.getGhostX()+4)*50;
@@ -102,7 +117,7 @@ public class FoffyMain extends Core implements KeyListener {
 	}
 
 	/**
-	 * Key events
+	 * Key events for controlling QMan on the map
 	 */
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
