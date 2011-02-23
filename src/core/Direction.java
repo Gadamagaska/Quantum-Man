@@ -10,7 +10,7 @@ import java.util.Collections;
  */
 public enum Direction {
 	WEST {
-	
+
 	},
 	EAST {
 
