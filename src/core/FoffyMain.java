@@ -15,8 +15,6 @@ import database.Database;
 
 import entities.Player;
 public class FoffyMain extends Core implements KeyListener {
-
-	// Git test, slet den når du opdager den :)
 	public static void main(String[] args) {
 		// wait for database to finish loading stuff
 		Database.getInstance();
@@ -101,7 +99,8 @@ public class FoffyMain extends Core implements KeyListener {
 	
 	/**
 	 * Draws the player on the screen on position (x, y)
-	 */
+	 *
+	 */ //TODO: even more testing!
 	private void drawPlayer(Graphics2D g) {
 		Image picture = player.getAnimation().getImage();
 		int x = 25+(player.getX()-player.getGhostX()+4)*50;
