@@ -16,6 +16,7 @@ import database.Database;
 import entities.Player;
 public class FoffyMain extends Core implements KeyListener {
 
+	// Git test, slet den når du opdager den :)
 	public static void main(String[] args) {
 		// wait for database to finish loading stuff
 		Database.getInstance();
