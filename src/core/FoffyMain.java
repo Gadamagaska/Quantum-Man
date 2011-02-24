@@ -144,6 +144,7 @@ public class FoffyMain extends Core implements KeyListener {
 			player.move(Direction.WEST);
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+			System.out.println("DOWN pressed");
 			player.move(Direction.SOUTH);
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_UP) {

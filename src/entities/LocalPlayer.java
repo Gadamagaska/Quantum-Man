@@ -14,7 +14,7 @@ public class LocalPlayer{
 		me = player;
 		
 		// making an Entity, just this once...
-		ghost = new Entity(player.getPos()){
+		ghost = new Entity(player.getPos().getLocation()){
 			@Override
 			public void activate() {}
 			@Override
@@ -73,6 +73,7 @@ public class LocalPlayer{
 					System.out.println("moving ghost south");
 					ghost.move(direction);
 				}
+				System.out.println("moving player south");
 				me.move(direction);
 			}
 			break;
