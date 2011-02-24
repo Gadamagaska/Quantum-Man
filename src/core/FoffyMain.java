@@ -7,12 +7,15 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.util.HashSet;
 
 import javax.swing.ImageIcon;
 
 import database.Database;
 
 
+import entities.ImageEntity;
+import entities.LocalPlayer;
 import entities.Player;
 import enums.Direction;
 public class FoffyMain extends Core implements KeyListener {
@@ -23,23 +26,29 @@ public class FoffyMain extends Core implements KeyListener {
 	}
 
 	private Image bg;
-	private Player player;
-	private int posX;
-	private int posY;
+	private HashSet<Player> characters; 
+	private HashSet<ImageEntity> entities;
+	private LocalPlayer player;
 
 	/**
 	 * Initialize everything by initializing super.init and specifying positions for the player.
 	 */
 	public void init(){
 		super.init();
-		Point pos = new Point();
-		posX = 5;
-		posY = 5;
-		pos.setLocation(posX, posY);
-		player = new Player("playersprite", Direction.SOUTH, pos);
+		characters = new HashSet<Player>();
+		// TODO: Skal indeholde "Character", men den siger
+		// player ikke kan være deri? men den nedarver da derfra
+		
+		createStuff();
 		s.addKeyListener(this);
 	}
 	
+	private void createStuff() {
+		Player first = new Player("Nezbo","playersprite",new Point(5,5));
+		characters.add(first);
+		player = new LocalPlayer(first);
+	}
+
 	/**
 	 * Draw everything on the screen
 	 */
@@ -49,7 +58,8 @@ public class FoffyMain extends Core implements KeyListener {
 		drawPlayer(g);
 		drawTopTiles(g);
 		
-		g.drawString("Player Coords: "+player.getX()+","+player.getY(), 200, 25+s.getInsets().top);
+		Player p = player.getPlayer();
+		g.drawString("Player Coords: "+p.getX()+","+p.getY(), 200, 25+s.getInsets().top);
 		g.drawString("Ghost Coords: "+player.getGhostX()+","+player.getGhostY(), 500, 25+s.getInsets().top);
 		g.drawString("Map size (h*w): "+Database.getInstance().getLevelDimensions(0).height+","+Database.getInstance().getLevelDimensions(0).width, 300, 590+s.getInsets().top);
 	}
@@ -103,9 +113,10 @@ public class FoffyMain extends Core implements KeyListener {
 	 *
 	 */ //TODO: even more testing!
 	private void drawPlayer(Graphics2D g) {
-		Image picture = player.getAnimation().getImage();
-		int x = 25+(player.getX()-player.getGhostX()+4)*50;
-		int y = 50+(player.getY()-player.getGhostY()+4)*50;
+		Player p = player.getPlayer();
+		Image picture = p.getImage();
+		int x = 25+(p.getX()-player.getGhostX()+4)*50;
+		int y = 50+(p.getY()-player.getGhostY()+4)*50;
 		g.drawImage(picture, x, y+22, null);
 	}
 
@@ -114,7 +125,9 @@ public class FoffyMain extends Core implements KeyListener {
 	 * @param timePassed Time since last update. 
 	 */
 	public void update(long timePassed) {
-		player.update(timePassed);
+		for(Player p : characters){
+			p.update(timePassed);
+		}
 	}
 
 	/**
@@ -125,16 +138,16 @@ public class FoffyMain extends Core implements KeyListener {
 			stop();
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			player.movePlayer(Direction.EAST);
+			player.move(Direction.EAST);
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-			player.movePlayer(Direction.WEST);
+			player.move(Direction.WEST);
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-			player.movePlayer(Direction.SOUTH);
+			player.move(Direction.SOUTH);
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_UP) {
-			player.movePlayer(Direction.NORTH);
+			player.move(Direction.NORTH);
 		}
 	}
 
