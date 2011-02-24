@@ -6,9 +6,9 @@ import java.awt.Point;
 import java.util.HashMap;
 
 import core.Animation;
-import core.Direction;
 import core.Sprite;
 import database.Database;
+import enums.Direction;
 
 
 public class Player {

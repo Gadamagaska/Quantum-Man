@@ -14,6 +14,7 @@ import database.Database;
 
 
 import entities.Player;
+import enums.Direction;
 public class FoffyMain extends Core implements KeyListener {
 	public static void main(String[] args) {
 		// wait for database to finish loading stuff
