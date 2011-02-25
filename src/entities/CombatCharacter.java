@@ -1,8 +1,10 @@
 package entities;
 
+import interfaces.Active;
+
 import java.awt.Point;
 
-public abstract class CombatCharacter extends Character {
+public abstract class CombatCharacter extends Character{
 	
 	private int base_health,health;
 	private int base_mana, mana;

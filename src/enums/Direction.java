@@ -1,6 +1,5 @@
 package enums;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -9,10 +8,7 @@ import java.util.Collections;
  * 
  */
 public enum Direction {
-	WEST {},
-	EAST {},
-	NORTH {},
-	SOUTH{};
+	WEST, EAST, NORTH, SOUTH;
 
 	/**
 	 * Shuffle an ArrayList containing the directions and returns the first value.

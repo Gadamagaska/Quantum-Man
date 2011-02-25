@@ -1,9 +1,11 @@
 package entities;
 
+import interfaces.Drawable;
+
 import java.awt.Image;
 import java.awt.Point;
 
-public class ImageEntity extends Entity {
+public class ImageEntity extends Entity implements Drawable{
 	
 	private Image image;
 
@@ -15,15 +17,4 @@ public class ImageEntity extends Entity {
 	public Image getImage(){
 		return image;
 	}
-
-	/**
-	 * These entities doesn't have any logic movement, feel
-	 * free to override in specific cases.
-	 */
-	@Override
-	public void move() {}
-
-	@Override
-	public void activate() {}
-
 }

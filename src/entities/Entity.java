@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import enums.Direction;
 
-public abstract class Entity {
+public class Entity {
 	
 	private Point pos;
 	private String name;
@@ -60,7 +60,4 @@ public abstract class Entity {
 	public String getName(){
 		return name;
 	}
-	
-	abstract public void activate();
-	abstract public void move();
 }

@@ -1,8 +1,10 @@
 package entities;
 
+import interfaces.Active;
+
 import java.awt.Point;
 
-public class Player extends CombatCharacter {
+public class Player extends CombatCharacter implements Active{
 	
 	// private Inventory inventory;
 	// private Quest[] quests;
@@ -25,11 +27,4 @@ public class Player extends CombatCharacter {
 	public void activate() {
 		// TODO Inspection af Player?
 	}
-
-	/**
-	 * Since a Player is controlled by a human this method
-	 * shouldn't do anything.
-	 */
-	@Override
-	public void move() {}
 }
