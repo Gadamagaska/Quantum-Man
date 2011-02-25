@@ -24,4 +24,8 @@ public enum Direction {
         
         return directions;
     }
+    
+    public void weHaw() {
+    	// Hi2u, Emil!
+    }
 }
