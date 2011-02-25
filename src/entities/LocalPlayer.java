@@ -70,8 +70,10 @@ public class LocalPlayer{
 		case SOUTH:
 			if(db.isWalkable(0, me.getX(), me.getY()+1)){
 				if((me.getY()-getGhostY() > 2) && (getGhostY() < map.height-6)){
+					System.out.println("moving ghost south");
 					ghost.move(direction);
 				}
+				System.out.println("moving player south");
 				me.move(direction);
 			}
 			break;
