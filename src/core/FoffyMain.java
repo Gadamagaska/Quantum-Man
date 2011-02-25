@@ -1,5 +1,7 @@
 package core;
 
+import interfaces.Drawable;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -31,7 +33,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	private Image bg;
 	private HashSet<Entity> entities;
 	private LocalPlayer player;
-	private Player dummy;
+	private ImageEntity dummy;
 
 	/**
 	 * Initialize everything by initializing super.init and specifying positions for the player.
@@ -48,12 +50,14 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	}
 
 	private void createStuff() {
+		Database db = Database.getInstance();
 		Player first = new Player("You","playersprite",new Point(5,5));
-		Player second = new Player("Door","playersprite",new Point(2,7));
+		ImageEntity second = new ImageEntity(db.getTileImage("tileset1", 26),new Point(2,7));
 		entities.add(first);
 		entities.add(second);
 		player = new LocalPlayer(first);
 		dummy = second;
+		dummy.setName("Door");
 	}
 
 	/**
@@ -120,11 +124,18 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 *
 	 */
 	private void drawPlayer(Graphics2D g) {
-		Player p = player.getPlayer();
-		Image picture = p.getImage();
-		int x = 25+(p.getX()-player.getGhostX()+4)*50;
-		int y = 50+(p.getY()-player.getGhostY()+4)*50;
-		g.drawImage(picture, x, y+s.getInsets().top, null);
+		for(Entity e : entities) {
+			try{
+			Drawable p = (Drawable)e;
+			Image picture = p.getImage();
+			int x = 25+(e.getX()-player.getGhostX()+4)*50;
+			int y = 50+(e.getY()-player.getGhostY()+4)*50;
+			g.drawImage(picture, x, y+s.getInsets().top, null);
+			} catch(Exception ex) {
+				
+			}
+		}
+		//Player p = player.getPlayer();
 	}
 
 	/**
