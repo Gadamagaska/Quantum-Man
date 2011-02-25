@@ -12,14 +12,7 @@ public class LocalPlayer{
 	
 	public LocalPlayer(Player player) {
 		me = player;
-		
-		// making an Entity, just this once...
-		ghost = new Entity(player.getPos().getLocation()){
-			@Override
-			public void activate() {}
-			@Override
-			public void move() {}
-		};
+		ghost = new Entity(player.getPos().getLocation());
 	}
 
 	public Player getPlayer(){

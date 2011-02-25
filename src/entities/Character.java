@@ -1,5 +1,7 @@
 package entities;
 
+import interfaces.Drawable;
+
 import java.awt.Image;
 import java.awt.Point;
 import java.util.HashMap;
@@ -8,7 +10,7 @@ import core.Animation;
 import database.Database;
 import enums.Direction;
 
-public abstract class Character extends Entity {
+public abstract class Character extends Entity implements Drawable{
 	
 	private Animation curAnimation;
 	private HashMap<Direction,Animation> dirAnimations;
