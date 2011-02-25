@@ -1,7 +1,6 @@
 package entities;
 
 import java.awt.Point;
-import java.awt.geom.Point2D;
 
 import enums.Direction;
 
@@ -13,10 +12,6 @@ public abstract class Entity {
 	public Entity(Point position){
 		pos = position;
 		name = "";
-	}
-	
-	public double distance(Point other){
-		return pos.distance((Point2D)other);
 	}
 	
 	public Point getPos(){
@@ -41,19 +36,15 @@ public abstract class Entity {
 		
 		case NORTH:{
 			pos.y -= 1;
-			break;
 		}
 		case SOUTH:{
 			pos.y += 1;
-			break;
 		}
 		case WEST:{
 			pos.x -= 1;
-			break;
 		}
 		case EAST:{
 			pos.x += 1;
-			break;
 		}
 		}
 	}

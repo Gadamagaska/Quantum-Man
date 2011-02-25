@@ -1,18 +1,10 @@
 package entities;
 
 import java.awt.Dimension;
-import java.awt.Point;
 
 import database.Database;
 import enums.Direction;
 
-/**
- * This class contains methods for moving and managing the Player controlled locally.
- * It has a reference to the normal Player object with all the stuff for the player.
- * 
- * @author Emil
- *
- */
 public class LocalPlayer{
 
 	private Player me;
@@ -34,10 +26,6 @@ public class LocalPlayer{
 		return me;
 	}
 	
-	public Point getGhostPos(){
-		return ghost.getPos();
-	}
-	
 	public int getGhostX(){
 		return ghost.getX();
 	}
@@ -46,7 +34,7 @@ public class LocalPlayer{
 		return ghost.getY();
 	}
 	
-	public synchronized void move(Direction direction){
+	public void move(Direction direction){
 		Database db = Database.getInstance();
 		Dimension map = db.getLevelDimensions(0);
 
@@ -82,8 +70,10 @@ public class LocalPlayer{
 		case SOUTH:
 			if(db.isWalkable(0, me.getX(), me.getY()+1)){
 				if((me.getY()-getGhostY() > 2) && (getGhostY() < map.height-6)){
+					System.out.println("moving ghost south");
 					ghost.move(direction);
 				}
+				System.out.println("moving player south");
 				me.move(direction);
 			}
 			break;
