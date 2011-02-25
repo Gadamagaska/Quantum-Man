@@ -1,4 +1,4 @@
-package core;
+package enums;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,18 +9,10 @@ import java.util.Collections;
  * 
  */
 public enum Direction {
-	WEST {
-
-	},
-	EAST {
-
-	},
-	NORTH {
-
-	},
-	SOUTH{
-
-	};
+	WEST {},
+	EAST {},
+	NORTH {},
+	SOUTH{};
 
     public static Collection<Direction> shuffleDirections()
     {
