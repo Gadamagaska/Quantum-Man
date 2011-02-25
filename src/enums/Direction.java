@@ -9,10 +9,7 @@ import java.util.Collections;
  * 
  */
 public enum Direction {
-	WEST {},
-	EAST {},
-	NORTH {},
-	SOUTH{};
+	WEST, EAST, NORTH, SOUTH;
 
     public static Direction getRandomDirection()
     {
