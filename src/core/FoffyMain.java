@@ -6,6 +6,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.HashSet;
 
@@ -13,11 +15,12 @@ import javax.swing.ImageIcon;
 
 import database.Database;
 
+import entities.Entity;
 import entities.ImageEntity;
 import entities.LocalPlayer;
 import entities.Player;
 import enums.Direction;
-public class FoffyMain extends Core implements KeyListener {
+public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public static void main(String[] args) {
 		// wait for database to finish loading stuff
 		Database.getInstance();
@@ -40,6 +43,7 @@ public class FoffyMain extends Core implements KeyListener {
 
 		createStuff();
 		s.addKeyListener(this);
+		s.addMouseListener(this);
 	}
 
 	private void createStuff() {
@@ -116,7 +120,7 @@ public class FoffyMain extends Core implements KeyListener {
 		Image picture = p.getImage();
 		int x = 25+(p.getX()-player.getGhostX()+4)*50;
 		int y = 50+(p.getY()-player.getGhostY()+4)*50;
-		g.drawImage(picture, x, y+22, null);
+		g.drawImage(picture, x, y+s.getInsets().top, null);
 	}
 
 	/**
@@ -152,4 +156,23 @@ public class FoffyMain extends Core implements KeyListener {
 
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
+
+	public void mouseClicked(MouseEvent e) {
+		int mouseX = ((e.getX()-25)/50+player.getGhostX()-4);
+		int mouseY = ((e.getY()-50-s.getInsets().top)/50+player.getGhostY()-4);
+		
+		
+	}
+
+	public void mouseEntered(MouseEvent e) {		
+	}
+
+	public void mouseExited(MouseEvent e) {		
+	}
+
+	public void mousePressed(MouseEvent e) {		
+	}
+	
+	public void mouseReleased(MouseEvent e) {		
+	}
 }

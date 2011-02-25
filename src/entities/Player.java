@@ -25,6 +25,6 @@ public class Player extends CombatCharacter implements Active{
 
 	@Override
 	public void activate() {
-		// TODO Inspection af Player?
+		System.out.println("hihi");
 	}
 }
