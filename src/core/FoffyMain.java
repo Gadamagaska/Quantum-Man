@@ -13,7 +13,6 @@ import javax.swing.ImageIcon;
 
 import database.Database;
 
-
 import entities.ImageEntity;
 import entities.LocalPlayer;
 import entities.Player;
@@ -37,7 +36,7 @@ public class FoffyMain extends Core implements KeyListener {
 		super.init();
 		characters = new HashSet<Player>();
 		// TODO: Skal indeholde "Character", men den siger
-		// player ikke kan vaere deri? men den nedarver da derfra
+		// player ikke kan vaere deri? men den nedarver da derfra.
 
 		createStuff();
 		s.addKeyListener(this);
