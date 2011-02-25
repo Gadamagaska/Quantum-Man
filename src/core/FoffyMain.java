@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 
@@ -28,16 +29,16 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	}
 
 	private Image bg;
-	private HashSet<Player> characters;
-	private HashSet<ImageEntity> entities;
+	private HashSet<Entity> entities;
 	private LocalPlayer player;
+	private Player dummy;
 
 	/**
 	 * Initialize everything by initializing super.init and specifying positions for the player.
 	 */
 	public void init(){
 		super.init();
-		characters = new HashSet<Player>();
+		entities = new HashSet<Entity>();
 		// TODO: Skal indeholde "Character", men den siger
 		// player ikke kan vaere deri? men den nedarver da derfra.
 
@@ -48,8 +49,11 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 
 	private void createStuff() {
 		Player first = new Player("Nezbo","playersprite",new Point(5,5));
-		characters.add(first);
+		Player second = new Player("Door","playersprite",new Point(2,7));
+		entities.add(first);
+		entities.add(second);
 		player = new LocalPlayer(first);
+		dummy = second;
 	}
 
 	/**
@@ -114,7 +118,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	/**
 	 * Draws the player on the screen on position (x, y)
 	 *
-	 */ //TODO: even more testing!
+	 */
 	private void drawPlayer(Graphics2D g) {
 		Player p = player.getPlayer();
 		Image picture = p.getImage();
@@ -128,9 +132,8 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 * @param timePassed Time since last update.
 	 */
 	public void update(long timePassed) {
-		for(Player p : characters){
-			p.update(timePassed);
-		}
+		player.getPlayer().update(timePassed);
+		//TODO get player from entities HashSet.
 	}
 
 	/**
@@ -160,7 +163,11 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		int mouseX = ((e.getX()-25)/50+player.getGhostX()-4);
 		int mouseY = ((e.getY()-50-s.getInsets().top)/50+player.getGhostY()-4);
-		
+		for(Entity entity : entities) {
+			if(mouseX == entity.getX() && mouseY == entity.getY()) {
+				System.out.println(entity.getName()+" ("+mouseX+","+mouseY+")");
+			}
+		}
 		
 	}
 
