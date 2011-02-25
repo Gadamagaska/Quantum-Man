@@ -14,6 +14,10 @@ public enum Direction {
 	NORTH {},
 	SOUTH{};
 
+	/**
+	 * Shuffle an ArrayList containing the directions and returns the first value.
+	 * @return randomDirection A random of the four directions.
+	 */
     public static Direction getRandomDirection()
     {
         ArrayList<Direction> directions = new ArrayList<Direction>();
