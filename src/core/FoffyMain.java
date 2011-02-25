@@ -48,7 +48,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	}
 
 	private void createStuff() {
-		Player first = new Player("Nezbo","playersprite",new Point(5,5));
+		Player first = new Player("You","playersprite",new Point(5,5));
 		Player second = new Player("Door","playersprite",new Point(2,7));
 		entities.add(first);
 		entities.add(second);
@@ -166,6 +166,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 		for(Entity entity : entities) {
 			if(mouseX == entity.getX() && mouseY == entity.getY()) {
 				System.out.println(entity.getName()+" ("+mouseX+","+mouseY+")");
+				break;
 			}
 		}
 		
