@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * En enumklasse til at få Direction. Hver direction kan give en animation, der tilhører.
+ * An enum class to get a direction. A randomly shuffled ArrayLost containing all directions
+ * can be achieved by the shuffleDirections() method.
  * @author BScient
  * 
  */
