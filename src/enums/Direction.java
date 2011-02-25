@@ -16,7 +16,7 @@ public enum Direction {
 
 	/**
 	 * Shuffle an ArrayList containing the directions and returns the first value.
-	 * @return randomDirection A random of the four directions.
+	 * @return randomDirection A random value of the four directions.
 	 */
     public static Direction getRandomDirection()
     {
