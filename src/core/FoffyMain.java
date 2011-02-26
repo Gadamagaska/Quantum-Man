@@ -42,7 +42,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 		super.init();
 		entities = new HashSet<Entity>();
 		// TODO: Skal indeholde "Character", men den siger
-		// player ikke kan vaere deri? men den nedarver da derfra.
+		// player ikke kan vaere deri? men den nedarver da derfra
 
 		createStuff();
 		s.addKeyListener(this);

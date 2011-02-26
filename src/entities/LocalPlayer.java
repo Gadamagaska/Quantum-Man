@@ -5,6 +5,14 @@ import java.awt.Dimension;
 import database.Database;
 import enums.Direction;
 
+/**
+ * The local player holds a reference to the Player object that
+ * is controlled locally, it also has the methods for moving that
+ * player around the game-world without conflicting with other
+ * Entities and world tiles.
+ * @author Emil
+ *
+ */
 public class LocalPlayer{
 
 	private Player me;
