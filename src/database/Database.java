@@ -44,16 +44,16 @@ public class Database {
 	 * objects to handle image-data.
 	 */
 	private Database(){
-		System.out.println(image_dir.getAbsolutePath());
-		System.out.println(data_dir.getAbsolutePath());
-		System.out.println(tile_dir.getAbsolutePath());
 		levels = new ArrayList<Level>();
 		tilesets = new HashMap<String,TileSet>();
 		loadLevels();
 
+		// maps
 		loadTile("tileset1",50,50);
+		
+		// characters
 		loadTile("playersprite",50,50);
-		System.out.println("finished loading");
+		loadTile("sandmonster",50,100);
 	}
 
 	/**
