@@ -91,6 +91,14 @@ public class TileSet {
 		}
 	}
 	
+	/**
+	 * Creates an animation from a selection of tiles and a single duration that all images should be shown for (in milliseconds).
+	 * 
+	 * @param images An array of integers corresponding to indexes on the source TileSet.
+	 * @param durations An integer with a duration that all images should be shown for.
+	 * @return An animation with the wanted tiles shown in the given order and for the given durations. If given invalid
+	 * images or durations it returns null.
+	 */
 	public Animation createAnimation(int[] images, int durations){
 		int[] durArray = new int[images.length];
 		for(int i = 0 ; i < durArray.length ; i++){

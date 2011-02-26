@@ -28,18 +28,33 @@ public class Level {
 		layers[index] = layer;
 	}
 
+	@Deprecated
 	public void addWalkable(int[][] tiles){
 		walkable_tiles = tiles.clone();
 	}
 
+	/**
+	 * @return The number specified on the given location, this matches a
+	 * tile on the level's TileSet.
+	 */
 	public int getTile(int layer, int x, int y){
 		return layers[layer][y][x];
 	}
 
+	/**
+	 * @return The dimensions of the current map
+	 */
 	public Dimension getDimensions(){
 		return new Dimension(layers[0][0].length, layers[0].length);
 	}
-
+	
+	/**
+	 * Tells if the specified location is walkable or not, that is; there are
+	 * no tiles on any layer of the location that isn't walkable.
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @return True if the location is walkable.
+	 */
 	public boolean isWalkable(int x, int y){
 		Dimension dim = getDimensions();
 		if(x < 0 || x >= dim.width || y < 0 || y >= dim.height){
