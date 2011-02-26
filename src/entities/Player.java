@@ -4,6 +4,13 @@ import interfaces.Active;
 
 import java.awt.Point;
 
+/**
+ * This class extends CombatCharacter and is used for actual Players. This
+ * can (and probably is) be the Player controlled locally, but might later
+ * also be another player on the server/network or another save-game.
+ * @author Emil
+ *
+ */
 public class Player extends CombatCharacter implements Active{
 	
 	// private Inventory inventory;
@@ -25,6 +32,6 @@ public class Player extends CombatCharacter implements Active{
 
 	@Override
 	public void activate() {
-		System.out.println("hihi");
+		// TODO Inspect or something
 	}
 }
