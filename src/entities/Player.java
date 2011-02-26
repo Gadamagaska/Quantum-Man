@@ -13,7 +13,9 @@ import java.awt.Point;
  */
 public class Player extends CombatCharacter implements Active{
 	
-	// private Inventory inventory;
+	private final int INVENTORY_SIZE = 16;
+	
+	private Inventory inventory;
 	// private Quest[] quests;
 	// private HashSet<EquipmentSlot> equipment;
 
@@ -28,6 +30,7 @@ public class Player extends CombatCharacter implements Active{
 		super(tileset, pos, 100, 100);
 		setName(name);
 		// TODO Instantiere de tre private felter ovenfor...
+		inventory = new Inventory(INVENTORY_SIZE);
 	}
 
 	@Override
