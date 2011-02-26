@@ -1,6 +1,13 @@
 package entities;
 import java.awt.Dimension;
 
+/**
+ * The level contains information about the three layers in a level.
+ * In the future it will also hold information about what Entities start
+ * where etc etc
+ * @author Emil
+ *
+ */
 public class Level {
 
 	public static final int NUM_LAYERS = 3;
@@ -8,6 +15,11 @@ public class Level {
 	private int[][][] layers = null;
 	private int[][] walkable_tiles = null;
 
+	/**
+	 * Loads a layer into the level object.
+	 * @param index The layer number.
+	 * @param layer The two-dimensional array of integers that is the layer.
+	 */
 	public void addLayer(int index, int[][] layer){
 		//System.out.println("adding layer "+index);
 		if(layers == null){
