@@ -25,7 +25,7 @@ import entities.Player;
 import enums.Direction;
 public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public static void main(String[] args) {
-		// wait for database to finish loading stuff
+		// wait for database to finish loading stuff.
 		Database.getInstance();
 		new FoffyMain().run();
 	}
@@ -125,14 +125,15 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 */
 	private void drawPlayer(Graphics2D g) {
 		for(Entity e : entities) {
-			try{
-			Drawable p = (Drawable)e;
-			Image picture = p.getImage();
-			int x = 25+(e.getX()-player.getGhostX()+4)*50;
-			int y = 50+(e.getY()-player.getGhostY()+4)*50;
-			g.drawImage(picture, x, y+s.getInsets().top, null);
-			} catch(Exception ex) {
-				
+			if(e.getX() >= player.getGhostX()-4 && e.getX() <= player.getGhostX() + 5
+					&& e.getY() >= player.getGhostY()-4 && e.getY() <= player.getGhostY() + 5) {
+				try{
+					Drawable p = (Drawable)e;
+					Image picture = p.getImage();
+					int x = 25+(e.getX()-player.getGhostX()+4)*50;
+					int y = 50+(e.getY()-player.getGhostY()+4)*50;
+					g.drawImage(picture, x, y+s.getInsets().top, null);
+				} catch(Exception ex) {}				
 			}
 		}
 		//Player p = player.getPlayer();
@@ -180,7 +181,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 				break;
 			}
 		}
-		
+
 	}
 
 	public void mouseEntered(MouseEvent e) {		
@@ -191,7 +192,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 
 	public void mousePressed(MouseEvent e) {		
 	}
-	
+
 	public void mouseReleased(MouseEvent e) {		
 	}
 }
