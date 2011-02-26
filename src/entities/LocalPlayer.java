@@ -9,7 +9,10 @@ import enums.Direction;
  * The local player holds a reference to the Player object that
  * is controlled locally, it also has the methods for moving that
  * player around the game-world without conflicting with other
- * Entities and world tiles.
+ * Entities and world tiles. To make the view only move when the
+ * Player is close to the edge of the view we use a "Ghost" that
+ * follows the player only if he is too far away, and it is actually
+ * the ghost's view that is seen.
  * @author Emil
  *
  */
@@ -18,23 +21,47 @@ public class LocalPlayer{
 	private Player me;
 	private Entity ghost;
 	
+	/**
+	 * The constructor only takes the reference to the player that
+	 * can be controlled locally.
+	 * @param player
+	 */
 	public LocalPlayer(Player player) {
 		me = player;
 		ghost = new Entity(player.getPos().getLocation());
 	}
 
+	/**
+	 * Returns the reference to the Player that can be controlled
+	 * locally.
+	 * @return
+	 */
 	public Player getPlayer(){
 		return me;
 	}
 	
+	/**
+	 * @return The x-coordinate for the Ghost.
+	 */
 	public int getGhostX(){
 		return ghost.getX();
 	}
 	
+	/**
+	 * @return The y-coordinate for the Ghost.
+	 */
 	public int getGhostY(){
 		return ghost.getY();
 	}
 	
+	/**
+	 * Moves the referenced Player in the direction specified. This is
+	 * done with concerns towards the walkability of the tiles in the
+	 * current level.
+	 * @param direction
+	 */
+	// TODO: This should also take into account if there is another Entity on
+	// the target position.
 	public void move(Direction direction){
 		Database db = Database.getInstance();
 		Dimension map = db.getLevelDimensions(0);
