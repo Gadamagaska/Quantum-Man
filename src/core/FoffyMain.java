@@ -162,7 +162,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 
 		String line;
 
-		// Split the line every time there is whitespace or colon (:)
+		// Split the line every time there is whitespace or equal (=)
 		try {
 			while((line = reader.readLine()) != null) {
 				dataMap.add(new ArrayList<String>(Arrays.asList(line.split("[\\s=]+"))));
@@ -175,32 +175,27 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 		 * Example output:
 		 * 
 		 * [
-		 * 	[IMAGE_ENTITY, NAME, "", TILESET, "tileset1", IMAGE, 35, POSX, 1, POSY, 7]
+		 * 	[IMAGE_ENTITY, NAME, "", TILESET, "tileset1", IMAGE, 35, POSX, 1, POSY, 7, FLYING, FALSE]
 		 * ]
 		 * 
 		 */
 		for (ArrayList<String> i : dataMap) {		
 			if (i.get(0).equals("IMAGE_ENTITY")) {
 				Database db = Database.getInstance();
-				String name = null;
-				if(!i.get(2).equals("null")) {
-					name = i.get(2);
-				}
 				String tileset = i.get(4);
 				int imageNumber = Integer.parseInt(i.get(6));
 				int posX = Integer.parseInt(i.get(8));
 				int posY= Integer.parseInt(i.get(10));
 				Image image = db.getTileImage(tileset, imageNumber);
-				
-				System.out.println(i);
-				System.out.println(name+","+tileset+","+imageNumber+","+posX+","+posY);
 				ImageEntity entity = new ImageEntity(image, new Point(posX, posY));
 				entities.add(entity);
-				if(name != "null") {
-					entity.setName(name);
+				if(!i.get(2).equals("null")) {
+					entity.setName(i.get(2));
+				}
+				if(i.get(12).equals("true")) {
+					entity.setFlying(true);
 				}
 			}
-
 		}
 	}
 
