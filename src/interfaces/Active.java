@@ -11,7 +11,7 @@ package interfaces;
 public interface Active {
 	/**
 	 * The method that is run when the Entity is activated by
-	 * the local Player
+	 * the local Player.
 	 */
 	public void activate();
 }
