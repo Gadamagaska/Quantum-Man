@@ -12,7 +12,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 
@@ -25,8 +24,7 @@ import entities.Player;
 import enums.Direction;
 public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public static void main(String[] args) {
-		// wait for database to finish loading stuff.
-		Database.getInstance();
+		Database db = Database.getInstance();
 		new FoffyMain().run();
 	}
 
@@ -41,8 +39,6 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public void init(){
 		super.init();
 		entities = new HashSet<Entity>();
-		// TODO: Skal indeholde "Character", men den siger
-		// player ikke kan vaere deri? men den nedarver da derfra
 
 		createStuff();
 		s.addKeyListener(this);

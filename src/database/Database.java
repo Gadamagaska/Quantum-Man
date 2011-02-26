@@ -110,9 +110,9 @@ public class Database {
 		int layer = 0;
 		Level cur = null;
 		for(int level = 0 ; level<level_files.length ; level++){
-			cur = new Level();
-			levels.add(cur);
 			if(level_files[level].getName().startsWith("level")){
+				cur = new Level();
+				levels.add(cur);
 				try {
 					fr = new FileReader(level_files[level]);
 					br = new BufferedReader(fr);

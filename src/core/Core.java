@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Window;
 
+import database.Database;
+
 
 public abstract class Core {
 	
