@@ -8,10 +8,12 @@ public class Entity {
 	
 	private Point pos;
 	private String name;
+	private boolean flying;
 	
 	public Entity(Point position){
 		pos = position;
 		name = "";
+		flying = false;
 	}
 	
 	public Point getPos(){

@@ -10,7 +10,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.swing.ImageIcon;
@@ -31,7 +37,6 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	private Image bg;
 	private HashSet<Entity> entities;
 	private LocalPlayer player;
-	private ImageEntity dummy;
 
 	/**
 	 * Initialize everything by initializing super.init and specifying positions for the player.
@@ -48,12 +53,9 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	private void createStuff() {
 		Database db = Database.getInstance();
 		Player first = new Player("You","playersprite",new Point(5,5));
-		ImageEntity second = new ImageEntity(db.getTileImage("tileset1", 26),new Point(2,7));
 		entities.add(first);
-		entities.add(second);
+		setEntities();
 		player = new LocalPlayer(first);
-		dummy = second;
-		dummy.setName("Door");
 	}
 
 	/**
@@ -142,6 +144,64 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public void update(long timePassed) {
 		player.getPlayer().update(timePassed);
 		//TODO get player from entities HashSet.
+	}
+
+	public void setEntities() {
+
+		File file = new File("data","imageEntities.txt");
+
+		// Create an ArrayList with an ArrayList of the lines of the file
+		ArrayList<ArrayList<String>> dataMap = new ArrayList<ArrayList<String>>();
+		BufferedReader reader = null;
+
+		try {
+			reader = new BufferedReader(new FileReader(file));
+		} catch (FileNotFoundException e) {
+			// Silent handling of exceptions
+		}
+
+		String line;
+
+		// Split the line every time there is whitespace or colon (:)
+		try {
+			while((line = reader.readLine()) != null) {
+				dataMap.add(new ArrayList<String>(Arrays.asList(line.split("[\\s=]+"))));
+			}
+		} catch (IOException e) {
+			// Silent handling of exceptions
+		}
+
+		/*
+		 * Example output:
+		 * 
+		 * [
+		 * 	[IMAGE_ENTITY, NAME, "", TILESET, "tileset1", IMAGE, 35, POSX, 1, POSY, 7]
+		 * ]
+		 * 
+		 */
+		for (ArrayList<String> i : dataMap) {		
+			if (i.get(0).equals("IMAGE_ENTITY")) {
+				Database db = Database.getInstance();
+				String name = null;
+				if(!i.get(2).equals("null")) {
+					name = i.get(2);
+				}
+				String tileset = i.get(4);
+				int imageNumber = Integer.parseInt(i.get(6));
+				int posX = Integer.parseInt(i.get(8));
+				int posY= Integer.parseInt(i.get(10));
+				Image image = db.getTileImage(tileset, imageNumber);
+				
+				System.out.println(i);
+				System.out.println(name+","+tileset+","+imageNumber+","+posX+","+posY);
+				ImageEntity entity = new ImageEntity(image, new Point(posX, posY));
+				entities.add(entity);
+				if(name != "null") {
+					entity.setName(name);
+				}
+			}
+
+		}
 	}
 
 	/**
