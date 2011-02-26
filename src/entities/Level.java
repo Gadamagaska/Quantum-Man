@@ -1,5 +1,6 @@
 package entities;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 /**
  * The level contains information about the three layers in a level.
@@ -14,14 +15,13 @@ public class Level {
 
 	private int[][][] layers = null;
 	private int[][] walkable_tiles = null;
-
+	
 	/**
 	 * Loads a layer into the level object.
 	 * @param index The layer number.
 	 * @param layer The two-dimensional array of integers that is the layer.
 	 */
 	public void addLayer(int index, int[][] layer){
-		//System.out.println("adding layer "+index);
 		if(layers == null){
 			layers = new int[NUM_LAYERS][layer.length][layer[0].length];
 		}
@@ -37,7 +37,7 @@ public class Level {
 	}
 
 	public Dimension getDimensions(){
-		return new Dimension(layers[0][0].length,layers[0].length );
+		return new Dimension(layers[0][0].length, layers[0].length);
 	}
 
 	public boolean isWalkable(int x, int y){
