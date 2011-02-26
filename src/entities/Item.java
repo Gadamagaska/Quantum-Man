@@ -1,12 +1,19 @@
 package entities;
 import enums.ItemSlot;
-
+/**
+ * An Item is a single item of some type.
+ * This class will be the 'main' class for items
+ * @author Thediabloman
+ */
 public class Item {
 	private int ItemID;
 	private String name;
 	private ItemSlot type;
 	private int value;
 	private boolean canBeSold;
+	
+	// Maybe instead of having a lot of parameters, some sort of static
+	// class/method could load all the data from a single ItemID?
 	
 	public Item(int ItemID, String name, ItemSlot type, int value, boolean canBeSold)
 	{

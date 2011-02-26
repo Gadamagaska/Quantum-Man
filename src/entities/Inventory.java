@@ -1,5 +1,10 @@
 package entities;
 
+/**
+ * Inventory is the class that will hold all the ItemStacks
+ * that any character with an inventory use
+ * @author Thediabloman
+ */
 public class Inventory {
 	private int size;
 	private int numberOfItems;

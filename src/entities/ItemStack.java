@@ -1,5 +1,10 @@
 package entities;
 
+/**
+ * Creates a new ItemStack for an item.
+ * An ItemStack can and should be instanciated even
+ * @author Thediabloman
+ */
 public class ItemStack {
 	private Item item;
 	private int amount;
@@ -7,8 +12,6 @@ public class ItemStack {
 	private boolean canBeStacked;
 	
 	/**
-	 * Creates a new ItemStack for an item.
-	 * An ItemStack can and should be instanciated even
 	 * when there is only one item in the stack initially.
 	 * This constructor will initialize a stackable stack, up to max.
 	 * @param item The item to add
