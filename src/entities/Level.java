@@ -13,12 +13,8 @@ public class Level {
 
 	public static final int NUM_LAYERS = 3;
 
-	private ArrayList<int[][]> layers = null;
+	private int[][][] layers = null;
 	private int[][] walkable_tiles = null;
-
-	public Level(){
-		layers = new ArrayList<int[][]>();
-	}
 	
 	/**
 	 * Loads a layer into the level object.
@@ -26,7 +22,10 @@ public class Level {
 	 * @param layer The two-dimensional array of integers that is the layer.
 	 */
 	public void addLayer(int index, int[][] layer){
-		layers.add(layer);
+		if(layers == null){
+			layers = new int[NUM_LAYERS][layer.length][layer[0].length];
+		}
+		layers[index] = layer;
 	}
 
 	public void addWalkable(int[][] tiles){
@@ -34,11 +33,11 @@ public class Level {
 	}
 
 	public int getTile(int layer, int x, int y){
-		return layers.get(layer)[y][x];
+		return layers[layer][y][x];
 	}
 
 	public Dimension getDimensions(){
-		return new Dimension(layers.get(0)[0].length, layers.get(0).length);
+		return new Dimension(layers[0][0].length, layers[0].length);
 	}
 
 	public boolean isWalkable(int x, int y){
@@ -48,7 +47,7 @@ public class Level {
 			return false;
 		}
 		int num;
-		for(int layer = 0 ; layer < layers.size() ; layer++){
+		for(int layer = 0 ; layer < layers.length ; layer++){
 			num = getTile(layer,x,y);
 			if(walkable_tiles[num/10][num%10] == 1){
 				return false;
