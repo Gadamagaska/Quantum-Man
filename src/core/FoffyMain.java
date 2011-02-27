@@ -5,7 +5,6 @@ import interfaces.Drawable;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -18,42 +17,30 @@ import javax.swing.ImageIcon;
 import database.Database;
 
 import entities.Entity;
-import entities.ImageEntity;
 import entities.LocalPlayer;
 import entities.Player;
 import enums.Direction;
+
 public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public static void main(String[] args) {
-		Database db = Database.getInstance();
 		new FoffyMain().run();
 	}
 
 	private Image bg;
 	private HashSet<Entity> entities;
 	private LocalPlayer player;
-	private ImageEntity dummy;
 
 	/**
 	 * Initialize everything by initializing super.init and specifying positions for the player.
 	 */
 	public void init(){
 		super.init();
-		entities = new HashSet<Entity>();
-
-		createStuff();
+		EntityLoader entityLoader = new EntityLoader();
+		entityLoader.setEntities();
+		entities = entityLoader.getEntities();
+		player = new LocalPlayer(entityLoader.getPlayer());
 		s.addKeyListener(this);
 		s.addMouseListener(this);
-	}
-
-	private void createStuff() {
-		Database db = Database.getInstance();
-		Player first = new Player("You","playersprite",new Point(5,5));
-		ImageEntity second = new ImageEntity(db.getTileImage("tileset1", 26),new Point(2,7));
-		entities.add(first);
-		entities.add(second);
-		player = new LocalPlayer(first);
-		dummy = second;
-		dummy.setName("Door");
 	}
 
 	/**
@@ -62,7 +49,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public synchronized void draw(Graphics2D g) {
 		drawBackground(g);
 		drawBottomTiles(g);
-		drawPlayer(g);
+		drawEntities(g);
 		drawTopTiles(g);
 
 		Player p = player.getPlayer();
@@ -116,23 +103,37 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	}
 
 	/**
-	 * Draws the player on the screen on position (x, y)
+	 * Draws the Entities on the screen on position (x, y)
 	 *
 	 */
-	private void drawPlayer(Graphics2D g) {
+	private void drawEntities(Graphics2D g) {
 		for(Entity e : entities) {
 			if(e.getX() >= player.getGhostX()-4 && e.getX() <= player.getGhostX() + 5
 					&& e.getY() >= player.getGhostY()-4 && e.getY() <= player.getGhostY() + 5) {
-				try{
-					Drawable p = (Drawable)e;
-					Image picture = p.getImage();
-					int x = 25+(e.getX()-player.getGhostX()+4)*50;
-					int y = 50+(e.getY()-player.getGhostY()+4)*50;
-					g.drawImage(picture, x, y+s.getInsets().top, null);
-				} catch(Exception ex) {}				
+				HashSet<Entity> flyingEntities = new HashSet<Entity>();
+				if(!e.getFlying()) {
+					try{
+						Drawable p = (Drawable)e;
+						Image picture = p.getImage();
+						int x = 25+(e.getX()-player.getGhostX()+4)*50;
+						int y = 50+(e.getY()-player.getGhostY()+4)*50;
+						g.drawImage(picture, x, y+s.getInsets().top, null);
+					} catch(Exception ex) {}				
+				}
+				else{
+					flyingEntities.add(e);
+				}
+				for(Entity i : flyingEntities) {
+					try{
+						Drawable p = (Drawable)i;
+						Image picture = p.getImage();
+						int x = 25+(e.getX()-player.getGhostX()+4)*50;
+						int y = 50+(e.getY()-player.getGhostY()+4)*50;
+						g.drawImage(picture, x, y+s.getInsets().top, null);
+					} catch(Exception ex) {}	
+				}
 			}
 		}
-		//Player p = player.getPlayer();
 	}
 
 	/**

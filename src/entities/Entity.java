@@ -16,6 +16,7 @@ public class Entity {
 	
 	private Point pos;
 	private String name;
+	private boolean flying;
 	
 	/**
 	 * The constructor takes a position that will be the entity's starting
@@ -25,6 +26,7 @@ public class Entity {
 	public Entity(Point position){
 		pos = position;
 		name = "";
+		flying = false;
 	}
 	
 	/**
@@ -98,5 +100,22 @@ public class Entity {
 	 */
 	public String getName(){
 		return name;
+	}
+	
+	/**
+	 * Sets whether the Entity is flying (placed on layer 2). If true, other
+	 * entities will be painted under it.
+	 * @param flying The wanted boolean value
+	 */
+	public void setFlying(boolean flying) {
+		this.flying = flying;
+	}
+	
+	/**
+	 * 
+	 * @return The boolean value of whether the Entity is flying.
+	 */
+	public boolean getFlying() {
+		return flying;
 	}
 }
