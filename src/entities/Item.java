@@ -6,22 +6,26 @@ import enums.ItemSlot;
  * @author Thediabloman
  */
 public class Item {
-	private int ItemID;
-	private String name;
-	private ItemSlot type;
-	private int value;
-	private boolean canBeSold;
+	private final int ItemID;
+	private final String name;
+	private final ItemSlot type;
+	private final int value;
+	private final boolean canBeSold;
+	private final boolean stackable;
+	private final int maxInStack;
 	
 	// Maybe instead of having a lot of parameters, some sort of static
 	// class/method could load all the data from a single ItemID?
 	
-	public Item(int ItemID, String name, ItemSlot type, int value, boolean canBeSold)
+	public Item(int ItemID, String name, ItemSlot type, int value, boolean canBeSold, boolean stackable, int maxInStack)
 	{
 		this.ItemID = ItemID;
 		this.name = name;
 		this.type = type;
 		this.value = value;
 		this.canBeSold = canBeSold;
+		this.stackable = stackable;
+		this.maxInStack = maxInStack;
 	}
 	
 	/**
@@ -73,5 +77,15 @@ public class Item {
 	public boolean canBeSold()
 	{
 		return canBeSold;
+	}
+	
+	public boolean canBeStacked()
+	{
+		return stackable;
+	}
+	
+	public int getMaxStack()
+	{
+		return maxInStack;
 	}
 }

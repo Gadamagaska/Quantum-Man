@@ -8,8 +8,6 @@ package entities;
 public class ItemStack {
 	private Item item;
 	private int amount;
-	private int max;
-	private boolean canBeStacked;
 	
 	/**
 	 * when there is only one item in the stack initially.
@@ -18,14 +16,12 @@ public class ItemStack {
 	 * @param amount The number of items in the stack initially
 	 * @param max The max number of items that can be in the stack
 	 */
-	public ItemStack(Item item, int amount, int max)
+	public ItemStack(Item item, int amount)
 	{
 		this.item = item;
 		this.amount = amount;
-		this.max = max; 
-		// I could check here and see if max is lower than amount
+		// I could check here and see if Item.max is lower than amount
 		// and then throw a exception?
-		canBeStacked = true;
 	}
 	
 	/**
@@ -40,8 +36,6 @@ public class ItemStack {
 	{
 		this.item = item;
 		amount = 1;
-		max = 1;
-		canBeStacked = false;
 	}
 	
 	/**
@@ -54,10 +48,10 @@ public class ItemStack {
 	 */
 	public int addItems(int moreItems)
 	{
-		if(canBeStacked){
-			if(amount + moreItems > max){
-				int leftOverItems = (amount + moreItems) - max;
-				amount = max;
+		if(item.canBeStacked()){
+			if(amount + moreItems > item.getMaxStack()){
+				int leftOverItems = (amount + moreItems) - item.getMaxStack();
+				amount = item.getMaxStack();
 				return leftOverItems;
 			} else {
 				amount += moreItems;
