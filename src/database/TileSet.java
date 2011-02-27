@@ -40,15 +40,29 @@ public class TileSet {
 
 		cols = image.getWidth(null) / width;
 	}
-	
+
+	/**
+	 * Adds the walkable array to the TileSet.
+	 * @param tiles
+	 */
 	public void addWalkable(ArrayList<int[]> tiles){
 		walkable = tiles;
 	}
-	
+
+	/**
+	 * Tells if the given tile is walkable or not (according to the walkable
+	 * array).
+	 * @param index The tile to find walkable to.
+	 * @return True if the tile is walkable, else false. If not walkable array is
+	 * defined this method always returns false.
+	 */
 	public boolean isWalkable(int index){
-		int x = index % cols;
-		int y = index / cols;
-		return walkable.get(y)[x] == 1;
+		if(walkable != null){
+			int x = index % cols;
+			int y = index / cols;
+			return walkable.get(y)[x] == 1;
+		}
+		return false;
 	}
 
 	/**
@@ -67,20 +81,20 @@ public class TileSet {
 			g.setComposite(AlphaComposite.Src);
 			g.drawImage(image, 0, 0, width, height, x*width, height*y, width*x+width, height*y+height, null);
 			g.dispose();
-			
+
 			// maing alpha
-		    for(int i = 0; i < temp.getHeight(); i++) {  
-		        for(int j = 0; j < temp.getWidth(); j++) {  
-		            if(temp.getRGB(j, i) == Color.WHITE.getRGB()) {  
-		            temp.setRGB(j, i, 0x8F1C1C);  
-		            }  
-		        }  
-		    }  
+			for(int i = 0; i < temp.getHeight(); i++) {  
+				for(int j = 0; j < temp.getWidth(); j++) {  
+					if(temp.getRGB(j, i) == Color.WHITE.getRGB()) {  
+						temp.setRGB(j, i, 0x8F1C1C);  
+					}  
+				}  
+			}  
 			tiles.put(index, temp);
 		}
 		return tiles.get(index);
 	}
-	
+
 	/**
 	 * Creates an animation from a selection of tiles and a duration for each tile to be showed (in milliseconds).
 	 * 
@@ -91,18 +105,18 @@ public class TileSet {
 	 */
 	public Animation createAnimation(int[] images, int[] durations){
 		if(images.length == durations.length){
-		Animation temp = new Animation();
-		
-		for(int img = 0 ; img<images.length ; img++){
-			temp.addScene(getImage(images[img]), durations[img]);
-		}
-		
-		return temp;
+			Animation temp = new Animation();
+
+			for(int img = 0 ; img<images.length ; img++){
+				temp.addScene(getImage(images[img]), durations[img]);
+			}
+
+			return temp;
 		}else{
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Creates an animation from a selection of tiles and a single duration that all images should be shown for (in milliseconds).
 	 * 

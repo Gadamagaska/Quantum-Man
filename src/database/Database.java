@@ -52,6 +52,10 @@ public class Database {
 		System.out.println("Database loaded");
 	}
 
+	/**
+	 * Loads all tileset (PNG) in the \images\tileset\ with the information specified
+	 * in the text file with the same name.
+	 */
 	private void loadTileSets() {
 		File[] tile_files = tile_dir.listFiles();
 		File image_file = null;
@@ -99,6 +103,8 @@ public class Database {
 						tilesets.put(name, current);
 
 						image_file = null;
+					}else{
+						System.out.println("Not enough info for TileSet="+image_file.getName());
 					}
 				} catch (Exception e) {e.printStackTrace();}
 			}
