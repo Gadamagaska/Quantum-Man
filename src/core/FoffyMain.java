@@ -153,8 +153,12 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 * @param timePassed Time since last update.
 	 */
 	public void update(long timePassed) {
-		player.getPlayer().update(timePassed);
-		//TODO get player from entities HashSet.
+		for(Entity e : entities) {
+			try{
+				Player pl = (Player)e;
+				pl.update(timePassed);
+			}catch(ClassCastException ex){}
+		}
 	}
 
 	/**

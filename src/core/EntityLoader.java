@@ -46,7 +46,7 @@ public class EntityLoader {
 
 		String line;
 
-		// Split the line every time there is whitespace or equal (=)
+		// Split the line every time there is whitespace or equal symbol (=)
 		try {
 			while((line = reader.readLine()) != null) {
 				dataMap.add(new ArrayList<String>(Arrays.asList(line.split("[\\s=]+"))));
@@ -57,16 +57,21 @@ public class EntityLoader {
 
 		for (ArrayList<String> i : dataMap) {	
 
-			//Load LocalPlayer
-			if(i.get(0).equals("LOCAL_PLAYER")) {
+			//Load Players
+			if(i.get(0).equals("LOCAL_PLAYER") || i.get(0).equals("PLAYER")) {
 				String name = i.get(2);
 				String tileset = i.get(4);
 				int posX = Integer.parseInt(i.get(6));
 				int posY = Integer.parseInt(i.get(8));
-				player = new Player(name, tileset, new Point(posX, posY));
+				Player tempPlayer = new Player(name, tileset, new Point(posX, posY));
 
 				// Add to entities HashSet
-				entities.add(player);
+				entities.add(tempPlayer);
+				
+				// If the Player is LocalPlayer, make it so.
+				if(i.get(0).equals("LOCAL_PLAYER")){
+					player = tempPlayer;
+				}
 			}
 
 			// Load ImageEntites
