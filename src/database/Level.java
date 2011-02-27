@@ -1,4 +1,4 @@
-package entities;
+package database;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class Level {
 	public static final int NUM_LAYERS = 3;
 
 	private int[][][] layers = null;
-	private int[][] walkable_tiles = null;
+	private TileSet tileset = null;
 	
 	/**
 	 * Loads a layer into the level object.
@@ -27,10 +27,9 @@ public class Level {
 		}
 		layers[index] = layer;
 	}
-
-	@Deprecated
-	public void addWalkable(int[][] tiles){
-		walkable_tiles = tiles.clone();
+	
+	public void setTileSet(TileSet tileset){
+		this.tileset = tileset;
 	}
 
 	/**
@@ -64,7 +63,7 @@ public class Level {
 		int num;
 		for(int layer = 0 ; layer < layers.length ; layer++){
 			num = getTile(layer,x,y);
-			if(walkable_tiles[num/10][num%10] == 1){
+			if(!tileset.isWalkable(num)){
 				return false;
 			}
 		}
