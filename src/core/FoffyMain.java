@@ -5,18 +5,11 @@ import interfaces.Drawable;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.swing.ImageIcon;
@@ -24,13 +17,12 @@ import javax.swing.ImageIcon;
 import database.Database;
 
 import entities.Entity;
-import entities.ImageEntity;
 import entities.LocalPlayer;
 import entities.Player;
 import enums.Direction;
+
 public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public static void main(String[] args) {
-		Database db = Database.getInstance();
 		new FoffyMain().run();
 	}
 
@@ -43,19 +35,12 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 */
 	public void init(){
 		super.init();
-		entities = new HashSet<Entity>();
-
-		createStuff();
+		EntityLoader entityLoader = new EntityLoader();
+		entityLoader.setEntities();
+		entities = entityLoader.getEntities();
+		player = new LocalPlayer(entityLoader.getPlayer());
 		s.addKeyListener(this);
 		s.addMouseListener(this);
-	}
-
-	private void createStuff() {
-		Database db = Database.getInstance();
-		Player first = new Player("You","playersprite",new Point(5,5));
-		entities.add(first);
-		setEntities();
-		player = new LocalPlayer(first);
 	}
 
 	/**
@@ -64,7 +49,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public synchronized void draw(Graphics2D g) {
 		drawBackground(g);
 		drawBottomTiles(g);
-		drawPlayer(g);
+		drawEntities(g);
 		drawTopTiles(g);
 
 		Player p = player.getPlayer();
@@ -118,23 +103,37 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	}
 
 	/**
-	 * Draws the player on the screen on position (x, y)
+	 * Draws the Entities on the screen on position (x, y)
 	 *
 	 */
-	private void drawPlayer(Graphics2D g) {
+	private void drawEntities(Graphics2D g) {
 		for(Entity e : entities) {
 			if(e.getX() >= player.getGhostX()-4 && e.getX() <= player.getGhostX() + 5
 					&& e.getY() >= player.getGhostY()-4 && e.getY() <= player.getGhostY() + 5) {
-				try{
-					Drawable p = (Drawable)e;
-					Image picture = p.getImage();
-					int x = 25+(e.getX()-player.getGhostX()+4)*50;
-					int y = 50+(e.getY()-player.getGhostY()+4)*50;
-					g.drawImage(picture, x, y+s.getInsets().top, null);
-				} catch(Exception ex) {}				
+				HashSet<Entity> flyingEntities = new HashSet<Entity>();
+				if(!e.getFlying()) {
+					try{
+						Drawable p = (Drawable)e;
+						Image picture = p.getImage();
+						int x = 25+(e.getX()-player.getGhostX()+4)*50;
+						int y = 50+(e.getY()-player.getGhostY()+4)*50;
+						g.drawImage(picture, x, y+s.getInsets().top, null);
+					} catch(Exception ex) {}				
+				}
+				else{
+					flyingEntities.add(e);
+				}
+				for(Entity i : flyingEntities) {
+					try{
+						Drawable p = (Drawable)i;
+						Image picture = p.getImage();
+						int x = 25+(e.getX()-player.getGhostX()+4)*50;
+						int y = 50+(e.getY()-player.getGhostY()+4)*50;
+						g.drawImage(picture, x, y+s.getInsets().top, null);
+					} catch(Exception ex) {}	
+				}
 			}
 		}
-		//Player p = player.getPlayer();
 	}
 
 	/**
@@ -144,59 +143,6 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public void update(long timePassed) {
 		player.getPlayer().update(timePassed);
 		//TODO get player from entities HashSet.
-	}
-
-	public void setEntities() {
-
-		File file = new File("data","imageEntities.txt");
-
-		// Create an ArrayList with an ArrayList of the lines of the file
-		ArrayList<ArrayList<String>> dataMap = new ArrayList<ArrayList<String>>();
-		BufferedReader reader = null;
-
-		try {
-			reader = new BufferedReader(new FileReader(file));
-		} catch (FileNotFoundException e) {
-			// Silent handling of exceptions
-		}
-
-		String line;
-
-		// Split the line every time there is whitespace or equal (=)
-		try {
-			while((line = reader.readLine()) != null) {
-				dataMap.add(new ArrayList<String>(Arrays.asList(line.split("[\\s=]+"))));
-			}
-		} catch (IOException e) {
-			// Silent handling of exceptions
-		}
-
-		/*
-		 * Example output:
-		 * 
-		 * [
-		 * 	[IMAGE_ENTITY, NAME, "", TILESET, "tileset1", IMAGE, 35, POSX, 1, POSY, 7, FLYING, FALSE]
-		 * ]
-		 * 
-		 */
-		for (ArrayList<String> i : dataMap) {		
-			if (i.get(0).equals("IMAGE_ENTITY")) {
-				Database db = Database.getInstance();
-				String tileset = i.get(4);
-				int imageNumber = Integer.parseInt(i.get(6));
-				int posX = Integer.parseInt(i.get(8));
-				int posY= Integer.parseInt(i.get(10));
-				Image image = db.getTileImage(tileset, imageNumber);
-				ImageEntity entity = new ImageEntity(image, new Point(posX, posY));
-				entities.add(entity);
-				if(!i.get(2).equals("null")) {
-					entity.setName(i.get(2));
-				}
-				if(i.get(12).equals("true")) {
-					entity.setFlying(true);
-				}
-			}
-		}
 	}
 
 	/**
