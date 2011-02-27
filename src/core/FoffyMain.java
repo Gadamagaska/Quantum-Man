@@ -37,7 +37,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 */
 	public void init(){
 		super.init();
-		entities = new HashSet<Entity>();
+		entities = Database.getInstance().getStartEntities(1);
 		Player lol = new Player("lol", "playersprite", new Point(5, 5));
 		player = new LocalPlayer(lol);
 		entities.add(lol);
@@ -60,7 +60,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 		Player p = player.getPlayer();
 		g.drawString("Player Coords: "+p.getX()+","+p.getY(), 200, 25+s.getInsets().top);
 		g.drawString("Ghost Coords: "+player.getGhostX()+","+player.getGhostY(), 500, 25+s.getInsets().top);
-		g.drawString("Map size (h*w): "+Database.getInstance().getLevelDimensions(0).height+","+Database.getInstance().getLevelDimensions(0).width, 300, 590+s.getInsets().top);
+		g.drawString("Map size (h*w): "+Database.getInstance().getLevelDimensions(1).height+","+Database.getInstance().getLevelDimensions(1).width, 300, 590+s.getInsets().top);
 	}
 
 	/**
@@ -71,8 +71,8 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 		for(int i = player.getGhostX()-4 ; i < player.getGhostX()+6; i++) {
 			x = 0;
 			for(int j = player.getGhostY()-4 ; j < player.getGhostY()+6 ; j++) {
-				int tile1 = Database.getInstance().getTile(0, 0, i, j);
-				int tile2 = Database.getInstance().getTile(0, 1, i, j);
+				int tile1 = Database.getInstance().getTile(1, 0, i, j);
+				int tile2 = Database.getInstance().getTile(1, 1, i, j);
 				g.drawImage(Database.getInstance().getTileImage("tileset1", tile1), y*50+25, x*50+50+s.getInsets().top, null);
 				g.drawImage(Database.getInstance().getTileImage("tileset1", tile2), y*50+25, x*50+50+s.getInsets().top, null);
 				x += 1;
@@ -89,7 +89,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 		for(int i = player.getGhostX()-4 ; i < player.getGhostX()+6 ; i++) {
 			x = 0;
 			for(int j = player.getGhostY()-4 ; j < player.getGhostY()+6 ; j++) {
-				int tile = Database.getInstance().getTile(0, 2, i, j);
+				int tile = Database.getInstance().getTile(1, 2, i, j);
 				g.drawImage(Database.getInstance().getTileImage("tileset1", tile), y*50+25, x*50+50+s.getInsets().top, null);
 				x += 1;
 			}

@@ -1,6 +1,7 @@
 package database;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.StringTokenizer;
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +15,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 import core.Animation;
+import entities.Entity;
 
 /**
  * The database contains all non-code data needed for the game to run. It is written
@@ -36,7 +38,7 @@ public class Database {
 	public File tile_dir = new File(image_dir,"tilesets");
 
 	// Loaded data
-	private ArrayList<Level> levels;
+	private HashMap<Integer, Level> levels;
 	private HashMap<String,TileSet> tilesets;
 
 	/**
@@ -44,7 +46,7 @@ public class Database {
 	 * objects to handle image-data.
 	 */
 	private Database(){
-		levels = new ArrayList<Level>();
+		levels = new HashMap<Integer,Level>();
 		tilesets = new HashMap<String,TileSet>();
 
 		loadTileSets();
@@ -159,8 +161,10 @@ public class Database {
 		Level cur = null;
 		for(int level = 0 ; level<level_files.length ; level++){
 			if(level_files[level].getName().startsWith("level")){
-				cur = new Level();
-				levels.add(cur);
+				// create the level
+				int lvl_num = Integer.parseInt(level_files[level].getName().replaceFirst("level", "").replaceFirst(".txt", ""));
+				cur = new Level(lvl_num);
+				levels.put(lvl_num,cur);
 				try {
 					fr = new FileReader(level_files[level]);
 					br = new BufferedReader(fr);
@@ -298,5 +302,9 @@ public class Database {
 	 */
 	public boolean isWalkable(int level, int x, int y){
 		return levels.get(level).isWalkable(x, y);
+	}
+	
+	public HashSet<Entity> getStartEntities(int level){
+		return levels.get(level).getStartEntities();
 	}
 }

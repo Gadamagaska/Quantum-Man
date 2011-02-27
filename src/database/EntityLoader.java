@@ -40,7 +40,7 @@ public class EntityLoader {
 		try {
 			reader = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e) {
-			// Silent handling of exceptions
+			System.out.println("File not found");
 		}
 
 		String line;

@@ -1,6 +1,8 @@
 package database;
 import java.awt.Dimension;
-import java.util.ArrayList;
+import java.io.File;
+import java.util.HashSet;
+import entities.Entity;
 
 /**
  * The level contains information about the three layers in a level.
@@ -13,8 +15,13 @@ public class Level {
 
 	public static final int NUM_LAYERS = 3;
 
+	private final int number;
 	private int[][][] layers = null;
 	private TileSet tileset = null;
+	
+	public Level(int number){
+		this.number = number;
+	}
 	
 	/**
 	 * Loads a layer into the level object.
@@ -30,6 +37,10 @@ public class Level {
 	
 	public void setTileSet(TileSet tileset){
 		this.tileset = tileset;
+	}
+	
+	public HashSet<Entity> getStartEntities(){
+		return new EntityLoader(new File("entities"+number)).getEntities();
 	}
 
 	/**
