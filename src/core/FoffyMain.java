@@ -146,6 +146,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 		for(Entity e : flyingEntities) {
 			drawTile(g, e);
 		}
+		flyingEntities.clear();
 	}
 
 	/**
