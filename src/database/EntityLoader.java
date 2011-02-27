@@ -20,6 +20,10 @@ public class EntityLoader {
 	private HashSet<Entity> entities;
 	private Player localPlayer;
 	
+	public EntityLoader(File filename) {
+		setEntities(filename);
+	}
+	
 	public HashSet<Entity> getEntities() {
 		return entities;
 	}
