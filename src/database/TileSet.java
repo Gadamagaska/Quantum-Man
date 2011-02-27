@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import core.Animation;
@@ -21,6 +22,7 @@ public class TileSet {
 	private BufferedImage image;
 	private HashMap<Integer,Image> tiles;
 	private int width,height,cols;
+	private ArrayList<int[]> walkable = new ArrayList<int[]>();
 
 	/**
 	 * The constructor for the TileSet class, it requres the source image and the width and height
@@ -37,6 +39,16 @@ public class TileSet {
 		tiles = new HashMap<Integer,Image>();
 
 		cols = image.getWidth(null) / width;
+	}
+	
+	public void addWalkable(ArrayList<int[]> tiles){
+		walkable = tiles;
+	}
+	
+	public boolean isWalkable(int index){
+		int x = index % cols;
+		int y = index / cols;
+		return walkable.get(y)[x] == 1;
 	}
 
 	/**

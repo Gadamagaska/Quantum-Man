@@ -1,6 +1,7 @@
 package database;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +14,6 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 import core.Animation;
-import entities.Level;
 
 /**
  * The database contains all non-code data needed for the game to run. It is written
@@ -46,14 +46,63 @@ public class Database {
 	private Database(){
 		levels = new ArrayList<Level>();
 		tilesets = new HashMap<String,TileSet>();
-		loadLevels();
 
-		// maps
-		loadTile("tileset1",50,50);
-		
-		// characters
-		loadTile("playersprite",50,50);
-		loadTile("sandmonster",50,100);
+		loadTileSets();
+		loadLevels();
+		System.out.println("Database loaded");
+	}
+
+	private void loadTileSets() {
+		File[] tile_files = tile_dir.listFiles();
+		File image_file = null;
+		for(File f : tile_files){
+			if(f.getName().endsWith(".png")){
+				image_file = f;
+			}else if(f.getName().endsWith(".txt")){
+				// load the width and height from it
+				int width = 0;
+				int height = 0;
+				ArrayList<int[]> numbers = new ArrayList<int[]>();
+				BufferedReader text = null;
+				String currentType = null;
+				String line = null;
+				String[] sep = null;
+				try {
+					text = new BufferedReader(new FileReader(f));
+					while((line = text.readLine()) != null){
+						if((sep = line.split("=")).length > 1){
+							if(sep[0].equals("WIDTH")){
+								width = Integer.parseInt(sep[1]);
+							}else if(sep[0].equals("HEIGHT")){
+								height = Integer.parseInt(sep[1]);
+							}else if(sep[0].equals("WALKABLE")){
+								currentType = sep[0];
+							}
+						}else{
+							if(currentType.equals("WALKABLE")){
+								sep = line.split(",");
+								int[] tal = new int[sep.length];
+								for(int i = 0 ; i < sep.length ; i++){
+									tal[i] = Integer.parseInt(sep[i]);
+								}
+								numbers.add(tal);
+							}
+						}
+					}
+
+					// load the image (with same name)
+					// create tileset with width and height and add to Map
+					if(width != 0 && height != 0 && image_file != null){
+						String name = new StringTokenizer(f.getName(),".").nextToken();
+						TileSet current = loadTile(name,width,height);
+						current.addWalkable(numbers);
+						tilesets.put(name, current);
+
+						image_file = null;
+					}
+				} catch (Exception e) {e.printStackTrace();}
+			}
+		}
 	}
 
 	/**
@@ -63,7 +112,7 @@ public class Database {
 	 * @param w The width of the tiles in the image.
 	 * @param h The height of the tiles in the image.
 	 */
-	private void loadTile(String name,int w, int h) {
+	private TileSet loadTile(String name,int w, int h) {
 		BufferedImage img = null;
 
 		try{
@@ -72,9 +121,7 @@ public class Database {
 			e.printStackTrace();
 		}
 
-		if(img != null){
-			tilesets.put(name, new TileSet(img,w,h));
-		}
+		return new TileSet(img,w,h);
 	}
 
 	/**
@@ -91,13 +138,8 @@ public class Database {
 	 * This includes the different layers of tiles and the walkability of the tiles on the
 	 * used TileSet.
 	 */
-	// TODO: Måske skal walkability være defineret for tileset'et istedet for level'en, ville give meget mere mening, 
-	//       og desuden skal det nok defineres i level-filen hvilket tileset det bruger.
 	private void loadLevels() {
 		File[] level_files = data_dir.listFiles();
-		for(File f : level_files){
-			System.out.println(f.getAbsolutePath());
-		}
 
 		ArrayList<int[]> complete_layer = null;
 		int[] tile_row;
@@ -128,11 +170,16 @@ public class Database {
 									save(cur_type,cur,layer,complete_layer);
 								}
 
-								// Gem nuværende header
-								cur_type = splitted_line[0];
-								layer = Integer.parseInt(splitted_line[1]);
+								// one-liners
+								if(splitted_line[0].equals("TILESET")){
+									cur.setTileSet(tilesets.get(splitted_line[1]));
+								}else{
+									// Gem nuværende header
+									cur_type = splitted_line[0];
+									layer = Integer.parseInt(splitted_line[1]);
+								}
 
-							}else if(cur_type.equals("LAYER") || cur_type.equals("WALKABLE")){
+							}else if(cur_type.equals("LAYER")){
 								splitted_line = line.split(",");
 								tile_row = new int[splitted_line.length];
 
@@ -177,7 +224,6 @@ public class Database {
 	 * @param complete_layer The ArrayList containing the different lines (rows) in the array.
 	 */
 	private void save(String cur_type,Level cur,int layer, ArrayList<int[]> complete_layer) {
-		System.out.println("Saving "+cur_type+" "+layer);
 		if(complete_layer != null){
 			int[][] total_layer = new int[complete_layer.size()][complete_layer.get(0).length];
 			for(int index = 0 ; index < total_layer.length ; index++){
@@ -185,8 +231,6 @@ public class Database {
 			}
 			if(cur_type.equals("LAYER")){
 				cur.addLayer(layer,total_layer);
-			}else if(cur_type.equals("WALKABLE")){
-				cur.addWalkable(total_layer);
 			}
 			complete_layer.clear();
 			complete_layer = null;
@@ -218,11 +262,11 @@ public class Database {
 	public Image getTileImage(String key,int index){
 		return tilesets.get(key).getImage(index);
 	}
-	
+
 	public Animation getTileAnimation(String key, int[] images, int[] durations){
 		return tilesets.get(key).createAnimation(images, durations);
 	}
-	
+
 	public Animation getTileAnimation(String key, int[] images, int durations){
 		return tilesets.get(key).createAnimation(images, durations);
 	}
