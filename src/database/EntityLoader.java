@@ -1,4 +1,4 @@
-package core;
+package database;
 
 import java.awt.Image;
 import java.awt.Point;
@@ -17,21 +17,21 @@ import entities.ImageEntity;
 import entities.Player;
 
 public class EntityLoader {
-	HashSet<Entity> entities;
-	Player player;
+	private HashSet<Entity> entities;
+	private Player localPlayer;
 	
 	public HashSet<Entity> getEntities() {
 		return entities;
 	}
 	
 	public Player getPlayer() {
-		return player;
+		return localPlayer;
 	}
 	
-	public void setEntities() {
+	public void setEntities(File filename) {
 
 		entities = new HashSet<Entity>();
-		File file = new File("data","entities.txt");
+		File file = new File(Database.getInstance().data_dir, filename+".txt");
 		Database db = Database.getInstance();
 
 		// Create an ArrayList with an ArrayList of the lines of the file
@@ -70,7 +70,7 @@ public class EntityLoader {
 				
 				// If the Player is LocalPlayer, make it so.
 				if(i.get(0).equals("LOCAL_PLAYER")){
-					player = tempPlayer;
+					localPlayer = tempPlayer;
 				}
 			}
 
