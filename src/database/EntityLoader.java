@@ -18,7 +18,6 @@ import entities.Player;
 
 public class EntityLoader {
 	private HashSet<Entity> entities;
-	private Player localPlayer;
 	
 	public EntityLoader(File filename) {
 		setEntities(filename);
@@ -26,10 +25,6 @@ public class EntityLoader {
 	
 	public HashSet<Entity> getEntities() {
 		return entities;
-	}
-	
-	public Player getPlayer() {
-		return localPlayer;
 	}
 	
 	public void setEntities(File filename) {
@@ -60,24 +55,6 @@ public class EntityLoader {
 		}
 
 		for (ArrayList<String> i : dataMap) {	
-
-			//Load Players
-			if(i.get(0).equals("LOCAL_PLAYER") || i.get(0).equals("PLAYER")) {
-				String name = i.get(2);
-				String tileset = i.get(4);
-				int posX = Integer.parseInt(i.get(6));
-				int posY = Integer.parseInt(i.get(8));
-				Player tempPlayer = new Player(name, tileset, new Point(posX, posY));
-
-				// Add to entities HashSet
-				entities.add(tempPlayer);
-				
-				// If the Player is LocalPlayer, make it so.
-				if(i.get(0).equals("LOCAL_PLAYER")){
-					localPlayer = tempPlayer;
-				}
-			}
-
 			// Load ImageEntites
 			if (i.get(0).equals("IMAGE_ENTITY")) {
 

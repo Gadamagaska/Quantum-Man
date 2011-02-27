@@ -5,6 +5,7 @@ import interfaces.Drawable;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -36,10 +37,10 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 */
 	public void init(){
 		super.init();
-		EntityLoader entityLoader = new EntityLoader();
-		entityLoader.setEntities();
-		entities = entityLoader.getEntities();
-		player = new LocalPlayer(entityLoader.getPlayer());
+		entities = new HashSet<Entity>();
+		Player lol = new Player("lol", "playersprite", new Point(5, 5));
+		player = new LocalPlayer(lol);
+		entities.add(lol);
 		s.addKeyListener(this);
 		s.addMouseListener(this);
 		flyingEntities = new HashSet<Entity>();
@@ -48,6 +49,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	/**
 	 * Draw everything on the screen
 	 */
+
 	public synchronized void draw(Graphics2D g) {
 		drawBackground(g);
 		drawBottomTiles(g);
