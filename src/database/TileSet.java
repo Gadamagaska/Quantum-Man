@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import core.Animation;
@@ -21,6 +22,7 @@ public class TileSet {
 	private BufferedImage image;
 	private HashMap<Integer,Image> tiles;
 	private int width,height,cols;
+	private ArrayList<int[]> walkable = new ArrayList<int[]>();
 
 	/**
 	 * The constructor for the TileSet class, it requres the source image and the width and height
@@ -40,6 +42,30 @@ public class TileSet {
 	}
 
 	/**
+	 * Adds the walkable array to the TileSet.
+	 * @param tiles
+	 */
+	public void addWalkable(ArrayList<int[]> tiles){
+		walkable = tiles;
+	}
+
+	/**
+	 * Tells if the given tile is walkable or not (according to the walkable
+	 * array).
+	 * @param index The tile to find walkable to.
+	 * @return True if the tile is walkable, else false. If not walkable array is
+	 * defined this method always returns false.
+	 */
+	public boolean isWalkable(int index){
+		if(walkable != null){
+			int x = index % cols;
+			int y = index / cols;
+			return walkable.get(y)[x] == 1;
+		}
+		return false;
+	}
+
+	/**
 	 * If the wanted tile is not already created it will be created from the source image and returned.
 	 * 
 	 * @param index The index of the tile in the source image. This is 0 for the upper-left tile, 1 for the
@@ -55,20 +81,20 @@ public class TileSet {
 			g.setComposite(AlphaComposite.Src);
 			g.drawImage(image, 0, 0, width, height, x*width, height*y, width*x+width, height*y+height, null);
 			g.dispose();
-			
+
 			// maing alpha
-		    for(int i = 0; i < temp.getHeight(); i++) {  
-		        for(int j = 0; j < temp.getWidth(); j++) {  
-		            if(temp.getRGB(j, i) == Color.WHITE.getRGB()) {  
-		            temp.setRGB(j, i, 0x8F1C1C);  
-		            }  
-		        }  
-		    }  
+			for(int i = 0; i < temp.getHeight(); i++) {  
+				for(int j = 0; j < temp.getWidth(); j++) {  
+					if(temp.getRGB(j, i) == Color.WHITE.getRGB()) {  
+						temp.setRGB(j, i, 0x8F1C1C);  
+					}  
+				}  
+			}  
 			tiles.put(index, temp);
 		}
 		return tiles.get(index);
 	}
-	
+
 	/**
 	 * Creates an animation from a selection of tiles and a duration for each tile to be showed (in milliseconds).
 	 * 
@@ -79,18 +105,26 @@ public class TileSet {
 	 */
 	public Animation createAnimation(int[] images, int[] durations){
 		if(images.length == durations.length){
-		Animation temp = new Animation();
-		
-		for(int img = 0 ; img<images.length ; img++){
-			temp.addScene(getImage(images[img]), durations[img]);
-		}
-		
-		return temp;
+			Animation temp = new Animation();
+
+			for(int img = 0 ; img<images.length ; img++){
+				temp.addScene(getImage(images[img]), durations[img]);
+			}
+
+			return temp;
 		}else{
 			return null;
 		}
 	}
-	
+
+	/**
+	 * Creates an animation from a selection of tiles and a single duration that all images should be shown for (in milliseconds).
+	 * 
+	 * @param images An array of integers corresponding to indexes on the source TileSet.
+	 * @param durations An integer with a duration that all images should be shown for.
+	 * @return An animation with the wanted tiles shown in the given order and for the given durations. If given invalid
+	 * images or durations it returns null.
+	 */
 	public Animation createAnimation(int[] images, int durations){
 		int[] durArray = new int[images.length];
 		for(int i = 0 ; i < durArray.length ; i++){

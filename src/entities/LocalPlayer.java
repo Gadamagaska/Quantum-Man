@@ -64,13 +64,13 @@ public class LocalPlayer{
 	// the target position.
 	public void move(Direction direction){
 		Database db = Database.getInstance();
-		Dimension map = db.getLevelDimensions(0);
+		Dimension map = db.getLevelDimensions(1);
 
 		me.turn(direction);
 		
 		switch(direction) {	
 		case EAST:{
-			if(db.isWalkable(0, me.getX()+1, me.getY())){
+			if(db.isWalkable(1, me.getX()+1, me.getY())){
 				if((me.getX()-getGhostX() > 2) && (getGhostX() < map.width-6)){
 					ghost.move(direction);
 				}
@@ -79,7 +79,7 @@ public class LocalPlayer{
 			break;
 		}
 		case WEST:{
-			if(db.isWalkable(0, me.getX()-1, me.getY())){
+			if(db.isWalkable(1, me.getX()-1, me.getY())){
 				if((me.getX()-getGhostX() < -1) && (getGhostX() > 4)){
 					ghost.move(direction);
 				}
@@ -88,7 +88,7 @@ public class LocalPlayer{
 			break;
 		}
 		case NORTH:
-			if(db.isWalkable(0, me.getX(), me.getY()-1)){
+			if(db.isWalkable(1, me.getX(), me.getY()-1)){
 				if((me.getY()-getGhostY() < -1) && (getGhostY() > 4)){
 					ghost.move(direction);
 				}
@@ -96,7 +96,7 @@ public class LocalPlayer{
 			}
 			break;
 		case SOUTH:
-			if(db.isWalkable(0, me.getX(), me.getY()+1)){
+			if(db.isWalkable(1, me.getX(), me.getY()+1)){
 				if((me.getY()-getGhostY() > 2) && (getGhostY() < map.height-6)){
 					ghost.move(direction);
 				}

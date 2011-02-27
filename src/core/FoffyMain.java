@@ -18,69 +18,61 @@ import javax.swing.ImageIcon;
 import database.Database;
 
 import entities.Entity;
-import entities.ImageEntity;
 import entities.LocalPlayer;
 import entities.Player;
 import enums.Direction;
+
 public class FoffyMain extends Core implements KeyListener, MouseListener {
 	public static void main(String[] args) {
-		Database db = Database.getInstance();
 		new FoffyMain().run();
 	}
 
 	private Image bg;
 	private HashSet<Entity> entities;
+	private HashSet<Entity> flyingEntities;
 	private LocalPlayer player;
-	private ImageEntity dummy;
 
 	/**
 	 * Initialize everything by initializing super.init and specifying positions for the player.
 	 */
 	public void init(){
 		super.init();
-		entities = new HashSet<Entity>();
-
-		createStuff();
+		entities = Database.getInstance().getStartEntities(1);
+		Player lol = new Player("lol", "playersprite", new Point(5, 5));
+		player = new LocalPlayer(lol);
+		entities.add(lol);
 		s.addKeyListener(this);
 		s.addMouseListener(this);
-	}
-
-	private void createStuff() {
-		Database db = Database.getInstance();
-		Player first = new Player("You","playersprite",new Point(5,5));
-		ImageEntity second = new ImageEntity(db.getTileImage("tileset1", 26),new Point(2,7));
-		entities.add(first);
-		entities.add(second);
-		player = new LocalPlayer(first);
-		dummy = second;
-		dummy.setName("Door");
+		flyingEntities = new HashSet<Entity>();
 	}
 
 	/**
 	 * Draw everything on the screen
 	 */
+
 	public synchronized void draw(Graphics2D g) {
 		drawBackground(g);
 		drawBottomTiles(g);
-		drawPlayer(g);
+		drawNotFlyingEntities(g);
+		drawFlyingEntities(g);
 		drawTopTiles(g);
 
 		Player p = player.getPlayer();
 		g.drawString("Player Coords: "+p.getX()+","+p.getY(), 200, 25+s.getInsets().top);
 		g.drawString("Ghost Coords: "+player.getGhostX()+","+player.getGhostY(), 500, 25+s.getInsets().top);
-		g.drawString("Map size (h*w): "+Database.getInstance().getLevelDimensions(0).height+","+Database.getInstance().getLevelDimensions(0).width, 300, 590+s.getInsets().top);
+		g.drawString("Map size (h*w): "+Database.getInstance().getLevelDimensions(1).height+","+Database.getInstance().getLevelDimensions(1).width, 300, 590+s.getInsets().top);
 	}
 
 	/**
-	 * Draws the tiles that are supposed to be drawn below the player
+	 * Draws the - by the level - predefined tiles that are to be drawn below the player
 	 */
 	private void drawBottomTiles(Graphics2D g) {
 		int x = 0, y = 0;
 		for(int i = player.getGhostX()-4 ; i < player.getGhostX()+6; i++) {
 			x = 0;
 			for(int j = player.getGhostY()-4 ; j < player.getGhostY()+6 ; j++) {
-				int tile1 = Database.getInstance().getTile(0, 0, i, j);
-				int tile2 = Database.getInstance().getTile(0, 1, i, j);
+				int tile1 = Database.getInstance().getTile(1, 0, i, j);
+				int tile2 = Database.getInstance().getTile(1, 1, i, j);
 				g.drawImage(Database.getInstance().getTileImage("tileset1", tile1), y*50+25, x*50+50+s.getInsets().top, null);
 				g.drawImage(Database.getInstance().getTileImage("tileset1", tile2), y*50+25, x*50+50+s.getInsets().top, null);
 				x += 1;
@@ -90,14 +82,14 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	}
 
 	/**
-	 * Draws the tiles that are supposed to be drawn on top of the player
+	 * Draws the - by the level - predefined tiles that are to be drawn above the player
 	 */
 	private void drawTopTiles(Graphics2D g) {
 		int x = 0, y = 0;
 		for(int i = player.getGhostX()-4 ; i < player.getGhostX()+6 ; i++) {
 			x = 0;
 			for(int j = player.getGhostY()-4 ; j < player.getGhostY()+6 ; j++) {
-				int tile = Database.getInstance().getTile(0, 2, i, j);
+				int tile = Database.getInstance().getTile(1, 2, i, j);
 				g.drawImage(Database.getInstance().getTileImage("tileset1", tile), y*50+25, x*50+50+s.getInsets().top, null);
 				x += 1;
 			}
@@ -116,23 +108,47 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	}
 
 	/**
-	 * Draws the player on the screen on position (x, y)
+	 * Draws the not flying Entities on the screen on position (x, y)
 	 *
 	 */
-	private void drawPlayer(Graphics2D g) {
+	private void drawNotFlyingEntities(Graphics2D g) {
 		for(Entity e : entities) {
 			if(e.getX() >= player.getGhostX()-4 && e.getX() <= player.getGhostX() + 5
 					&& e.getY() >= player.getGhostY()-4 && e.getY() <= player.getGhostY() + 5) {
-				try{
-					Drawable p = (Drawable)e;
-					Image picture = p.getImage();
-					int x = 25+(e.getX()-player.getGhostX()+4)*50;
-					int y = 50+(e.getY()-player.getGhostY()+4)*50;
-					g.drawImage(picture, x, y+s.getInsets().top, null);
-				} catch(Exception ex) {}				
-			}
+				if(!e.getFlying()) {
+					drawTile(g, e);
+				}
+				else{
+					flyingEntities.add(e);
+				}
+			}			
 		}
-		//Player p = player.getPlayer();
+	}
+
+	/**
+	 * Draws the wanted tile on the screen
+	 * @param g The graphics engine
+	 * @param e The Entity that is to be drawn
+	 */
+	private void drawTile(Graphics2D g, Entity e){
+		try{
+			Drawable p = (Drawable)e;
+			Image picture = p.getImage();
+			int x = 25+(e.getX()-player.getGhostX()+4)*50;
+			int y = 50+(e.getY()-player.getGhostY()+4)*50;
+			g.drawImage(picture, x, y+s.getInsets().top, null);
+		} catch(Exception ex) {}
+	}
+
+	/**
+	 * Draw all flying Entities on the screen
+	 * @param g The graphics engine
+	 */
+	private void drawFlyingEntities(Graphics2D g) {
+		for(Entity e : flyingEntities) {
+			drawTile(g, e);
+		}
+		flyingEntities.clear();
 	}
 
 	/**
@@ -140,8 +156,12 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 * @param timePassed Time since last update.
 	 */
 	public void update(long timePassed) {
-		player.getPlayer().update(timePassed);
-		//TODO get player from entities HashSet.
+		for(Entity e : entities) {
+			try{
+				Player pl = (Player)e;
+				pl.update(timePassed);
+			}catch(ClassCastException ex){}
+		}
 	}
 
 	/**
