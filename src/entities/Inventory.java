@@ -1,11 +1,12 @@
 package entities;
+import java.util.Iterator;
 
 /**
  * Inventory is the class that will hold all the ItemStacks
  * that any character with an inventory use
  * @author Thediabloman
  */
-public class Inventory {
+public class Inventory implements Iterator<ItemStack> {
 	private int size;
 	private int numberOfItems;
 	private ItemStack[] inventory;
@@ -95,6 +96,11 @@ public class Inventory {
 			return null;
 		}
 	}
+
+public Iterator<ItemStack> getIterator()
+{
+//TODO
+}
 	
 	/**
 	 * @return true if the slot is within the range of the inventory
