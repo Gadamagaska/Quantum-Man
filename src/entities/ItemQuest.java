@@ -22,7 +22,7 @@ public class ItemQuest extends Item {
 	 */
 	public ItemQuest(int questID, int itemID, String name, ItemSlot type, boolean stackable, int maxInStack)
 	{
-		super(itemID, name, type, 0, false, stackable, maxInStack);
+		super(itemID, name, type, 0, false, stackable, maxInStack, null);
 		connectedQuestID = questID;
 	}
 	
