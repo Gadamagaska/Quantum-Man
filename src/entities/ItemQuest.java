@@ -19,6 +19,8 @@ public class ItemQuest extends Item {
 	 * @param type The type of the Item // could be UNEQUIPABLE by standard
 	 * @param stackable If it can be stacked
 	 * @param maxInStack How much it can be stacked
+	 * 
+	 * @author Thediabloman
 	 */
 	public ItemQuest(int questID, int itemID, String name, ItemSlot type, boolean stackable, int maxInStack)
 	{
