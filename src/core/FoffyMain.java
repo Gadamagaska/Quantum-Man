@@ -113,15 +113,17 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 */
 	private void drawNotFlyingEntities(Graphics2D g) {
 		for(Entity e : entities) {
-			if(e.getX() >= player.getGhostX()-4 && e.getX() <= player.getGhostX() + 5
-					&& e.getY() >= player.getGhostY()-4 && e.getY() <= player.getGhostY() + 5) {
-				if(!e.getFlying()) {
-					drawTile(g, e);
-				}
-				else{
-					flyingEntities.add(e);
-				}
-			}			
+			if(e instanceof Drawable){
+				if(e.getX() >= player.getGhostX()-4 && e.getX() <= player.getGhostX() + 5
+						&& e.getY() >= player.getGhostY()-4 && e.getY() <= player.getGhostY() + 5) {
+					if(!e.getFlying()) {
+						drawEntity(g, e);
+					}
+					else{
+						flyingEntities.add(e);
+					}
+				}	
+			}
 		}
 	}
 
@@ -130,14 +132,14 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 * @param g The graphics engine
 	 * @param e The Entity that is to be drawn
 	 */
-	private void drawTile(Graphics2D g, Entity e){
-		try{
+	private void drawEntity(Graphics2D g, Entity e){
+		if(e instanceof Drawable){
 			Drawable p = (Drawable)e;
 			Image picture = p.getImage();
 			int x = 25+(e.getX()-player.getGhostX()+4)*50;
 			int y = 50+(e.getY()-player.getGhostY()+4)*50;
 			g.drawImage(picture, x, y+s.getInsets().top, null);
-		} catch(Exception ex) {}
+		}
 	}
 
 	/**
@@ -146,7 +148,7 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 */
 	private void drawFlyingEntities(Graphics2D g) {
 		for(Entity e : flyingEntities) {
-			drawTile(g, e);
+			drawEntity(g, e);
 		}
 		flyingEntities.clear();
 	}
