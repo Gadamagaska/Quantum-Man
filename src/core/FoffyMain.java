@@ -133,13 +133,11 @@ public class FoffyMain extends Core implements KeyListener, MouseListener {
 	 * @param e The Entity that is to be drawn
 	 */
 	private void drawEntity(Graphics2D g, Entity e){
-		if(e instanceof Drawable){
 			Drawable p = (Drawable)e;
 			Image picture = p.getImage();
 			int x = 25+(e.getX()-player.getGhostX()+4)*50;
 			int y = 50+(e.getY()-player.getGhostY()+4)*50;
 			g.drawImage(picture, x, y+s.getInsets().top, null);
-		}
 	}
 
 	/**
