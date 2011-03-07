@@ -1,0 +1,21 @@
+<?xml version = "1.0"?>
+<item>
+  <itemID>00000001</itemID>
+  <name>"Ring of Doom"</name>
+  <description>"An old ring with immense powers"</description>
+  <type>UNEQUIPABLE</type>
+  <value>0.002</value>
+  <canBeSold>true</canBeSold>
+  <stackable>false</stackable>
+  <maxInStack>1</maxInStack>
+  <power-list>
+    <power>
+      <skill>STRENGHT</skill>
+      <value>2</value>
+    </power>
+    <power>
+      <skill>HEALTH</skill>
+      <value>10</value>
+    </power>
+  </power-list>
+</item>
